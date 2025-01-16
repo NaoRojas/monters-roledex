@@ -3,6 +3,8 @@ import './App.css'
 
 class App extends Component {
   constructor(props) {
+    // Initialitze the state
+    console.log(' 1')
     super(props)
     this.state = {
       monsters: [],
@@ -10,12 +12,14 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log(' 3')
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((users) => this.setState({ monsters: users }))
   }
 
   render() {
+    console.log(' 2')
     return (
       <>
         <h1>Monsters</h1>
