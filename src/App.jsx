@@ -1,5 +1,7 @@
 import { Component } from 'react'
 import './App.css'
+import CardList from './components/card-list/card-list.component'
+import SearchBar from './components/search-bar/search-bar.component'
 
 class App extends Component {
   constructor(props) {
@@ -8,6 +10,7 @@ class App extends Component {
     super(props)
     this.state = {
       monsters: [],
+      searchMonsterName: '',
     }
   }
 
@@ -18,15 +21,28 @@ class App extends Component {
       .then((users) => this.setState({ monsters: users }))
   }
 
+  filteredMonsters = () => {
+    const { monsters, searchMonsterName } = this.state
+    return monsters.filter((monster) =>
+      monster.name.toLowerCase().includes(searchMonsterName.toLowerCase())
+    )
+  }
+
+  onSearchMonster = (e) => {
+    // Is better to create a function onSearchMonster to handle the search
+    // for performance reasons
+
+    this.setState({ searchMonsterName: e.target.value })
+  }
+
   render() {
     console.log(' 2')
     return (
       <>
-        <h1>Monsters</h1>
-        <div className="card">
-          {this.state.monsters.map((monster) => (
-            <h2 key={monster.id}>{monster.name}</h2>
-          ))}
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground px-4">
+          <h1 className="text-3xl font-bold tracking-tight">Monsters</h1>
+          <SearchBar onSearchMonster={this.onSearchMonster} />
+          <CardList monsters={this.filteredMonsters()} />
         </div>
       </>
     )
