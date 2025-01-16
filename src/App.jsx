@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Component } from 'react'
 import './App.css'
+import CardList from './components/card-list/card-list.component'
+import SearchBar from './components/search-bar/search-bar.component'
 
-function App() {
-  const [count, setCount] = useState(0)
+class App extends Component {
+  constructor(props) {
+    // Initialitze the state
+    console.log(' 1')
+    super(props)
+    this.state = {
+      monsters: [],
+      searchMonsterName: '',
+    }
+  }
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  componentDidMount() {
+    console.log(' 3')
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((users) => this.setState({ monsters: users }))
+  }
+
+  filteredMonsters = () => {
+    const { monsters, searchMonsterName } = this.state
+    return monsters.filter((monster) =>
+      monster.name.toLowerCase().includes(searchMonsterName.toLowerCase())
+    )
+  }
+
+  onSearchMonster = (e) => {
+    // Is better to create a function onSearchMonster to handle the search
+    // for performance reasons
+
+    this.setState({ searchMonsterName: e.target.value })
+  }
+
+  render() {
+    console.log('Render 2')
+    return (
+      <>
+        <div className="flex flex-col space-y-8 m-52 justify-center">
+          <h1 className="text-3xl font-bold text-center mb-2">Monsters</h1>
+          <SearchBar className="mb-2" onSearchMonster={this.onSearchMonster} />
+          <CardList className="mt-4" monsters={this.filteredMonsters()} />
+        </div>
+      </>
+    )
+  }
 }
 
 export default App
