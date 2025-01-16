@@ -36,13 +36,13 @@ class App extends Component {
   }
 
   render() {
-    console.log(' 2')
+    console.log('Render 2')
     return (
       <>
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground px-4">
-          <h1 className="text-3xl font-bold tracking-tight">Monsters</h1>
-          <SearchBar onSearchMonster={this.onSearchMonster} />
-          <CardList monsters={this.filteredMonsters()} />
+        <div className="flex flex-col space-y-8 m-52 justify-center">
+          <h1 className="text-3xl font-bold text-center mb-2">Monsters</h1>
+          <SearchBar className="mb-2" onSearchMonster={this.onSearchMonster} />
+          <CardList className="mt-4" monsters={this.filteredMonsters()} />
         </div>
       </>
     )
