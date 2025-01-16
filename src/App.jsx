@@ -1,53 +1,29 @@
 import { Component } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: {
-        first: 'John',
-        last: 'Doe',
-      },
-      company: 'Apple',
+      monsters: [],
     }
   }
-  changeName = () => {
-    this.setState(
-      {
-        name: {
-          first: 'Jane',
-          last: 'Doe',
-        },
-      },
-      () => {
-        console.log('Name changed to Jane')
-      }
-    )
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((response) => response.json())
+      .then((users) => this.setState({ monsters: users }))
   }
+
   render() {
     return (
       <>
-        <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
-        </div>
-        <h1>Vite + React</h1>
+        <h1>Monsters</h1>
         <div className="card">
-          <p>
-            Hi {this.state.name.first}, I work at {this.state.company}
-          </p>
+          {this.state.monsters.map((monster) => (
+            <h2 key={monster.id}>{monster.name}</h2>
+          ))}
         </div>
-        <button onClick={() => this.changeName()}>Change Name</button>
-        <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p>
       </>
     )
   }
